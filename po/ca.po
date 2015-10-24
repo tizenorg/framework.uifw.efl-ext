@@ -3,3 +3,9 @@ msgstr "Aquesta aplicació no admet el lector de pantalla. Premi la tecla d'inic
 
 msgid "IDS_EA_BODY_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msgstr "ÀÇÉÈÍÓÒÚÜABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+msgid "IDS_COM_BODY_CLEAR_ALL"
+msgstr "Esborrar-ho tot"
+
+msgid "IDS_COM_BODY_SEARCH_FIELD_T_TTS"
+msgstr "Camp de cerca"

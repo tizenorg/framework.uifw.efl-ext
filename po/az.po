@@ -3,3 +3,9 @@ msgstr "Ekran oxuyucusu bu proqram tərəfindən dəstəklənmir. Əsas ekrana g
 
 msgid "IDS_EA_BODY_ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msgstr "ABCÇDEƏFGĞHXIİJKQLMNOÖPRSŞTUÜVYZ"
+
+msgid "IDS_COM_BODY_CLEAR_ALL"
+msgstr " Hamısını sil"
+
+msgid "IDS_COM_BODY_SEARCH_FIELD_T_TTS"
+msgstr "Axtarış sahəsi"
