@@ -148,33 +148,29 @@ _eext_top_parent_candidates(Eina_List **candidates, Evas *e)
 }
 
 static Eext_Object_Event *
-_eext_find_event_target(Eina_List *candidates, Evas_Object *parent, Eext_Callback_Type type)
+_eext_find_event_target(Eina_List *candidates, Evas_Object *parent)
 {
    Eext_Object_Event *obj_event = NULL;
-   Eina_List *l, *ll;
+   Eina_List *l;
    Evas_Object *obj;
    Eina_List *members = NULL;
-   Eext_Event_Callback *callback;
 
-   if (eo_isa(parent, EVAS_OBJECT_SMART_CLASS))
+   //FIXME: when eo api is opened, we should use
+   // eo_isa(parent, evas_object_smart_class_get)
+   const char *type = evas_object_type_get(parent);
+   if (strcmp(type, "rectangle") && strcmp(type, "line") && strcmp(type, "polygon")
+       && strcmp(type, "text") && strcmp(type, "textblock") && strcmp(type, "image"))
      members = evas_object_smart_members_get(parent);
-
    if (members)
      {
         EINA_LIST_REVERSE_FOREACH(members, l, obj)
           {
-             obj_event = _eext_find_event_target(candidates, obj, type);
+             obj_event = _eext_find_event_target(candidates, obj);
              //got you!
              if (obj_event)
                {
-                  EINA_LIST_FOREACH(obj_event->callbacks, ll, callback)
-                    {
-                       if (callback->type == type)
-                         {
-                            eina_list_free(members);
-                            return obj_event;
-                         }
-                    }
+                  eina_list_free(members);
+                  return obj_event;
                }
           }
         eina_list_free(members);
@@ -183,21 +179,14 @@ _eext_find_event_target(Eina_List *candidates, Evas_Object *parent, Eext_Callbac
    EINA_LIST_REVERSE_FOREACH(candidates, l, obj_event)
      {
         //got you!
-        if (parent == obj_event->obj)
-          {
-             EINA_LIST_FOREACH(obj_event->callbacks, ll, callback)
-               {
-                  if (callback->type == type)
-                    return obj_event;
-               }
-          }
+        if (parent == obj_event->obj) return obj_event;
      }
 
    return NULL;
 }
 
 static Eext_Object_Event *
-_eext_top_obj_event_find(Eext_Event_Mgr *event_mgr, Eext_Callback_Type type)
+_eext_top_obj_event_find(Eext_Event_Mgr *event_mgr)
 {
    Eext_Object_Event *obj_event = NULL;
    Eina_List *l, *l_next;
@@ -247,7 +236,7 @@ _eext_top_obj_event_find(Eext_Event_Mgr *event_mgr, Eext_Callback_Type type)
    if (eina_list_count(candidates) == 1) goto found;
 
    //4. find the target in this parent tree.
-   obj_event = _eext_find_event_target(candidates, parent, type);
+   obj_event = _eext_find_event_target(candidates, parent);
    eina_list_free(candidates);
    return obj_event;
 
@@ -268,14 +257,14 @@ _eext_key_grab_rect_key_up_cb(void *data, Evas *e, Evas_Object *obj,
    Eext_Callback_Type type;
    Eina_List *l;
 
+   obj_event = _eext_top_obj_event_find(event_mgr);
+   if (!obj_event) return;
+
    if (!strcmp(ev->keyname, EEXT_KEY_BACK))
      type = EEXT_CALLBACK_BACK;
    else if (!strcmp(ev->keyname, EEXT_KEY_MENU))
      type = EEXT_CALLBACK_MORE;
    else return;
-
-   obj_event = _eext_top_obj_event_find(event_mgr, type);
-   if (!obj_event) return;
 
    obj_event->on_callback = EINA_TRUE;
    EINA_LIST_FOREACH(obj_event->callbacks, l, callback)

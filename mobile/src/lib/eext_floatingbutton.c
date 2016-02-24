@@ -129,8 +129,8 @@ _pos_recalc(Eo *obj, Eext_Floatingbutton_Data *sd)
    if (count >= 2) w1 = EEXT_SCALE_SIZE(FLOATINGBUTTON_2BTN_WIDTH, obj);
    else w1 = EEXT_SCALE_SIZE(FLOATINGBUTTON_1BTN_WIDTH, obj);
 
-   sd->pos_table[EEXT_FLOATINGBUTTON_LEFT] = (w1 - EEXT_SCALE_SIZE(FLOATINGBUTTON_LR_WIDTH, obj)) / (double)(w - w1);
-   sd->pos_table[EEXT_FLOATINGBUTTON_RIGHT] = (w - w1 * 2 + EEXT_SCALE_SIZE(FLOATINGBUTTON_LR_WIDTH, obj)) / (double)(w - w1);
+   sd->pos_table[EEXT_FLOATINGBUTTON_LEFT] = (w1 - EEXT_SCALE_SIZE(50, obj)) / (double)(w - w1);
+   sd->pos_table[EEXT_FLOATINGBUTTON_RIGHT] = (w - w1 * 2 + EEXT_SCALE_SIZE(50, obj)) / (double)(w - w1);
 }
 
 static void
@@ -169,7 +169,7 @@ _vg_resize_cb(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_inf
 
    evas_vg_shape_shape_reset(fbd->base_shape);
    evas_vg_shape_shape_append_rect(fbd->base_shape, 0, 0, w, h,
-                                   EEXT_SCALE_SIZE(FLOATINGBUTTON_LAYOUT_LR_WIDTH, fbd->obj),
+                                   EEXT_SCALE_SIZE(FLOATINGBUTTON_LR_WIDTH, fbd->obj),
                                    (EEXT_SCALE_SIZE(FLOATINGBUTTON_HEIGHT, fbd->obj)/2));
 }
 
